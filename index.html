@@ -11,7 +11,7 @@
 <meta name="theme-color" content="#F4EFE8">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700&family=Noto+Sans+JP:wght@400;500;700&family=Zen+Kaku+Gothic+New:wght@500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=M+PLUS+Rounded+1c:wght@400;500;700&family=Noto+Sans+JP:wght@400;500;700&family=Zen+Kaku+Gothic+New:wght@500;700&display=swap" rel="stylesheet">
 <style>
   :root{
     /* ---- routine palette (also used by workout modal at body level) ---- */
@@ -346,6 +346,79 @@
   #tab-meal .cal .cell.sat .dnum{color:#3E6E9A;}
   #tab-meal .cal .cell .dm{color:var(--muted);margin-top:2px;}
 
+  /* ============ HABIT: home mini row ============ */
+  .hmini{
+    display:flex; align-items:center; gap:11px; width:100%; text-align:left;
+    font-family:inherit; color:inherit; cursor:pointer; -webkit-tap-highlight-color:transparent;
+    background:#EAF0E9; border:1px solid #DCE4DA; border-radius:14px;
+    padding:11px 14px; margin:2px 2px 13px; transition:transform .12s ease;
+  }
+  .hmini:active{transform:scale(.99);}
+  .hmini-ic{font-size:18px;}
+  .hmini-main{flex:1; min-width:0; line-height:1.3;}
+  .hmini-main b{font-size:13.5px; font-weight:700; color:#29332C;}
+  .hmini-sub{display:block; font-size:11.5px; color:#6E7A6F;}
+  .hmini-streak{font-size:12.5px; font-weight:700; color:#45685D; white-space:nowrap;}
+
+  /* ============ HABIT: full-screen modal (5分リセット) ============ */
+  #habitModal{
+    position:fixed; inset:0; z-index:60; display:none;
+    align-items:center; justify-content:center; padding:24px 18px; overflow-y:auto;
+    background:radial-gradient(120% 90% at 50% -10%, #F4F7F3, #EAF0E9 60%);
+    --accent:#5E8B7E; --accent-deep:#45685D; --ink:#29332C; --ink-soft:#6E7A6F;
+    --surface:#FFFFFF; --line:#DCE4DA; --bg-2:#F4F7F3;
+    --display:"Fraunces",Georgia,serif;
+    --jp:"M PLUS Rounded 1c","Hiragino Kaku Gothic ProN","Hiragino Sans","Noto Sans JP",sans-serif;
+    font-family:var(--jp); color:var(--ink);
+  }
+  #habitModal.open{display:flex;}
+  #habitModal .hclose{position:fixed; top:14px; right:16px; width:36px; height:36px; border-radius:50%; border:1px solid var(--line); background:var(--surface); color:var(--ink-soft); font-size:15px; line-height:1; cursor:pointer; z-index:2;}
+  #habitModal .stage{width:100%; max-width:440px; display:flex; flex-direction:column; align-items:center; text-align:center;}
+  #habitModal .eyebrow{font-size:.78rem; letter-spacing:.28em; color:var(--ink-soft); margin-bottom:6px;}
+  #habitModal .hstreak{display:inline-flex; align-items:center; gap:7px; padding:7px 14px; background:var(--surface); border:1px solid var(--line); border-radius:999px; font-size:.85rem; color:var(--ink); box-shadow:0 6px 16px -12px rgba(41,51,44,.3); margin-bottom:30px;}
+  #habitModal .hstreak .leaf{font-size:1rem;}
+  #habitModal .hstreak b{font-family:var(--display); font-weight:600; font-size:1.05rem; font-variant-numeric:tabular-nums;}
+  #habitModal .hstreak .tiny{color:var(--ink-soft); font-size:.78rem;}
+  #habitModal .panel{display:none; flex-direction:column; align-items:center; width:100%; animation:hrise .5s cubic-bezier(.2,.8,.2,1);}
+  #habitModal .panel.on{display:flex;}
+  @keyframes hrise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  #habitModal .lead{font-family:var(--display); font-weight:500; font-size:1.75rem; line-height:1.4; letter-spacing:.01em; margin-bottom:8px;}
+  #habitModal .sub{color:var(--ink-soft); font-size:.95rem; line-height:1.7; margin-bottom:40px;}
+  #habitModal .start-wrap{position:relative; display:grid; place-items:center; margin-bottom:34px;}
+  #habitModal .breath{position:absolute; width:196px; height:196px; border-radius:50%; background:radial-gradient(circle,rgba(94,139,126,.22),rgba(94,139,126,0) 70%); animation:hbreathe 4.2s ease-in-out infinite;}
+  @keyframes hbreathe{0%,100%{transform:scale(.82);opacity:.6}50%{transform:scale(1.12);opacity:1}}
+  #habitModal .start{position:relative; width:150px; height:150px; border-radius:50%; border:none; cursor:pointer; background:linear-gradient(160deg,var(--accent),var(--accent-deep)); color:#fff; font-family:var(--display); font-weight:500; font-size:1.3rem; box-shadow:0 18px 34px -14px rgba(69,104,93,.7); transition:transform .18s ease, box-shadow .18s ease;}
+  #habitModal .start:active{transform:translateY(1px) scale(.98);}
+  #habitModal .note{color:var(--ink-soft); font-size:.85rem; max-width:300px; line-height:1.7;}
+  #habitModal .card{width:100%; background:var(--surface); border:1px solid var(--line); border-radius:26px; padding:30px 26px 26px; box-shadow:0 14px 40px -18px rgba(41,51,44,.28);}
+  #habitModal .card-tag{font-size:.8rem; letter-spacing:.16em; color:var(--accent); margin-bottom:14px;}
+  #habitModal .task{font-family:var(--display); font-weight:500; font-size:1.5rem; line-height:1.5; min-height:2.4em; display:flex; align-items:center; justify-content:center;}
+  #habitModal .lens{display:flex; gap:8px; justify-content:center; margin:22px 0 8px;}
+  #habitModal .lens button{border:1px solid var(--line); background:transparent; color:var(--ink-soft); padding:7px 15px; border-radius:999px; font-family:var(--jp); font-size:.85rem; cursor:pointer; transition:all .15s ease;}
+  #habitModal .lens button.sel{background:var(--accent); border-color:var(--accent); color:#fff;}
+  #habitModal .ring-wrap{position:relative; width:180px; height:180px; margin:14px auto 6px;}
+  #habitModal svg.hring{transform:rotate(-90deg); width:100%; height:100%; margin:0;}
+  #habitModal .ring-bg{fill:none; stroke:var(--line); stroke-width:9;}
+  #habitModal .ring-fg{fill:none; stroke:var(--accent); stroke-width:9; stroke-linecap:round; transition:stroke-dashoffset .95s linear;}
+  #habitModal .clock{position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center;}
+  #habitModal .clock .num{font-family:var(--display); font-weight:500; font-size:2.6rem; font-variant-numeric:tabular-nums; line-height:1;}
+  #habitModal .clock .lbl{font-size:.72rem; color:var(--ink-soft); margin-top:6px; letter-spacing:.14em;}
+  #habitModal .actions{display:flex; gap:12px; margin-top:22px;}
+  #habitModal .btn{flex:1; border:none; border-radius:15px; padding:15px; font-family:var(--jp); font-size:1rem; font-weight:600; cursor:pointer; transition:transform .15s ease, filter .15s ease;}
+  #habitModal .btn:active{transform:translateY(1px);}
+  #habitModal .btn-main{background:linear-gradient(160deg,var(--accent),var(--accent-deep)); color:#fff;}
+  #habitModal .btn-ghost{background:var(--bg-2); color:var(--ink-soft); border:1px solid var(--line);}
+  #habitModal .swap{margin-top:16px; background:none; border:none; color:var(--ink-soft); font-family:var(--jp); font-size:.86rem; cursor:pointer; text-decoration:underline; text-underline-offset:3px;}
+  #habitModal .reassure{margin-top:20px; color:var(--ink-soft); font-size:.85rem; line-height:1.7;}
+  #habitModal .done-mark{font-size:2.6rem; margin-bottom:8px; animation:hpop .5s cubic-bezier(.2,1.4,.4,1);}
+  @keyframes hpop{from{transform:scale(0)}to{transform:scale(1)}}
+  #habitModal .done-h{font-family:var(--display); font-weight:600; font-size:1.9rem; margin-bottom:10px;}
+  #habitModal .done-p{color:var(--ink-soft); font-size:.98rem; line-height:1.7; margin-bottom:6px;}
+  #habitModal .done-streak{display:inline-flex; align-items:center; gap:8px; margin:20px 0 30px; padding:12px 22px; border-radius:16px; background:var(--surface); border:1px solid var(--line); box-shadow:0 14px 40px -18px rgba(41,51,44,.28);}
+  #habitModal .done-streak .n{font-family:var(--display); font-weight:600; font-size:1.6rem; color:var(--accent-deep); font-variant-numeric:tabular-nums;}
+  #habitModal .done-streak .t{font-size:.9rem; color:var(--ink-soft); text-align:left; line-height:1.4;}
+  @media (prefers-reduced-motion:reduce){ #habitModal .breath,#habitModal .panel,#habitModal .done-mark{animation:none;} #habitModal .ring-fg{transition:none;} }
+
   @media (max-width:560px){
     #tab-meal h1{font-size:21px;} #tab-meal .tab{font-size:12px;} #tab-meal .templates{grid-template-columns:1fr;}
     #tab-meal .cal .cell{min-height:50px;font-size:9.5px;}
@@ -368,6 +441,11 @@
       <button class="hcard hcard-routine" id="hcRoutine" data-go="routine"></button>
       <button class="hcard hcard-schedule" id="hcSchedule" data-go="schedule"></button>
       <button class="hcard hcard-meal" id="hcMeal" data-go="meal"></button>
+      <button class="hmini" id="hcHabit" type="button">
+        <span class="hmini-ic">🧹</span>
+        <span class="hmini-main"><b>5分リセット</b><span class="hmini-sub">片付けの最初の一歩・やることは1つだけ</span></span>
+        <span class="hmini-streak" id="hcHabitStreak">🌱 0</span>
+      </button>
     </div>
   </section>
 
@@ -630,6 +708,55 @@
   <div class="sheet" id="guideSheet"></div>
 </div>
 
+<!-- 5分リセット（掃除・片付けの習慣）モーダル -->
+<div id="habitModal" role="dialog" aria-modal="true" aria-label="5分リセット">
+  <button class="hclose" id="hClose" type="button" aria-label="閉じる">✕</button>
+  <div class="stage">
+    <div class="eyebrow">今日のリセット</div>
+    <div class="hstreak" id="hStreak"><span class="leaf" id="hLeaf">🌱</span><span><b id="hStreakN">0</b><span class="tiny"> 日連続</span></span></div>
+
+    <section class="panel on" id="hPStart">
+      <h1 class="lead" id="hStartLead">まずは、たった1つ。</h1>
+      <p class="sub">「どこから片付けよう」で止まらないように、<br>やることは自動で1つだけ選びます。</p>
+      <div class="start-wrap"><div class="breath"></div><button class="start" id="hStartBtn" type="button">はじめる</button></div>
+      <p class="note">押すと、5分でできる小さな片付けが1つ出ます。<br><b>途中でやめてOK。始めただけで今日は勝ちです。</b></p>
+    </section>
+
+    <section class="panel" id="hPTask">
+      <div class="card">
+        <div class="card-tag" id="hTaskTag">今日の1つ</div>
+        <div class="task" id="hTaskText">—</div>
+        <div class="lens" id="hLens">
+          <button data-min="2" type="button">2分</button>
+          <button data-min="5" class="sel" type="button">5分</button>
+          <button data-min="10" type="button">10分</button>
+        </div>
+        <div class="ring-wrap">
+          <svg class="hring" viewBox="0 0 200 200"><circle class="ring-bg" cx="100" cy="100" r="86"></circle><circle class="ring-fg" id="hRingFg" cx="100" cy="100" r="86"></circle></svg>
+          <div class="clock"><div class="num" id="hClockNum">5:00</div><div class="lbl" id="hClockLbl">スタート</div></div>
+        </div>
+        <div class="actions">
+          <button class="btn btn-main" id="hDoneBtn" type="button">できた！</button>
+          <button class="btn btn-ghost" id="hStopBtn" type="button">やめる</button>
+        </div>
+        <button class="swap" id="hSwapBtn" type="button">これは今は難しい → 別のにする</button>
+      </div>
+      <p class="reassure">終わりが見えると、脳は動きやすくなります。<br>タイマーが鳴るまで、この1つだけでいい。</p>
+    </section>
+
+    <section class="panel" id="hPDone">
+      <div class="done-mark">🌿</div>
+      <h2 class="done-h">おつかれさま！</h2>
+      <p class="done-p" id="hDonePraise">1つ片付いた部屋は、さっきより少し軽い。</p>
+      <div class="done-streak"><span class="n" id="hDoneN">1</span><span class="t">日連続で<br>手を動かせた</span></div>
+      <div class="actions" style="max-width:340px">
+        <button class="btn btn-main" id="hMoreBtn" type="button">もう1つやる</button>
+        <button class="btn btn-ghost" id="hFinishBtn" type="button">今日はここまで</button>
+      </div>
+    </section>
+  </div>
+</div>
+
 <script>
 /* ==================================================================
    PERSISTENCE  (localStorage, 毎朝6時に「日次チェック」をリセット)
@@ -646,7 +773,7 @@ function mondayOf(dd){ const x=new Date(dd); const wd=(x.getDay()+6)%7; x.setDat
 
 let store = {
   day:'', routine:{checked:{},streak:0,lastCompleted:''}, schedule:{checked:{}},
-  shop:{checked:{}}, mealAnchor:'', mealWeekAdjust:0
+  shop:{checked:{}}, habit:{streak:0,total:0,lastDate:''}, mealAnchor:'', mealWeekAdjust:0
 };
 
 function saveStore(){ try{ localStorage.setItem(STORE_KEY, JSON.stringify(store)); }catch(e){} }
@@ -655,6 +782,7 @@ function loadStore(){
   store.routine = store.routine || {checked:{},streak:0,lastCompleted:''};
   store.schedule = store.schedule || {checked:{}};
   store.shop = store.shop || {checked:{}};
+  store.habit = store.habit || {streak:0,total:0,lastDate:''};
   if(!store.mealAnchor) store.mealAnchor = dstr(mondayOf(new Date()));
   if(typeof store.mealWeekAdjust!=='number') store.mealWeekAdjust=0;
   rolloverIfNeeded();
@@ -1524,6 +1652,9 @@ function renderHome(){
   const monday = (ld.getDay()===1);
   document.getElementById('buyBanner').style.display = monday ? 'flex' : 'none';
 
+  var hstk = store.habit.streak||0;
+  document.getElementById('hcHabitStreak').textContent = habitLeaf(hstk)+' '+hstk;
+
   /* --- routine card --- */
   const done = countDone(), total = TOTAL;
   const pctW = total ? Math.round(done/total*100) : 0;
@@ -1610,6 +1741,107 @@ setInterval(function(){
   if(document.getElementById('tab-schedule').classList.contains('show')) renderSchedule();
 }, 60000);
 
+/* ==================================================================
+   HABIT — 5分リセット（掃除・片付けの最初の一歩）
+   ================================================================== */
+const HABIT_TASKS = [
+  "テーブルの上のものを1か所に集める","床に落ちているものを5つ拾う","使ったコップ・お皿を1つ洗う",
+  "ゴミを1袋分だけまとめる","ペットボトルや空き缶をまとめる","玄関の靴をそろえて並べる",
+  "洗濯物を5枚だけたたむ","ベッド・布団を整える","机の上を片付ける","リモコン類を定位置に戻す",
+  "郵便物・書類を1か所に集める","洗面台をさっと拭く","床を1部屋だけワイパーがけ","キッチンのシンクを空にする",
+  "カバンの中身を1つ出して片付ける","散らかった服を1枚だけかける"
+];
+const HABIT_PRAISE = [
+  "1つ片付いた部屋は、さっきより少し軽い。","「始められた」という事実が、いちばん大きい。",
+  "完璧じゃなくていい。動いた自分が偉い。","小さな一歩でも、昨日より前に進んでる。","リセット完了。今日はもう合格です。"
+];
+const habitModal = document.getElementById('habitModal');
+const hById = id => document.getElementById(id);
+const hPanels = { start:hById('hPStart'), task:hById('hPTask'), done:hById('hPDone') };
+function hShow(name){ for(const k in hPanels){ hPanels[k].classList.toggle('on', k===name); } }
+let hMinutes=5, hRemaining=0, hTimerId=null, hLastTaskIdx=-1;
+const H_R=86, H_C=2*Math.PI*H_R;
+
+function habitLeaf(n){ return n>=7 ? "🌳" : n>=3 ? "🌿" : "🌱"; }
+function renderHabitStreak(){
+  const s = store.habit.streak||0;
+  hById('hStreakN').textContent = s;
+  hById('hLeaf').textContent = habitLeaf(s);
+  hById('hcHabitStreak').textContent = habitLeaf(s)+' '+s;
+  if(store.habit.lastDate === logicalDay()){
+    hById('hStartLead').textContent = "今日はもう動けた。";
+    hById('hStartBtn').textContent = "もう1つ";
+  } else {
+    hById('hStartLead').textContent = "まずは、たった1つ。";
+    hById('hStartBtn').textContent = "はじめる";
+  }
+}
+function hFmt(s){ const m=Math.floor(s/60), ss=s%60; return m+":"+String(ss).padStart(2,"0"); }
+function hSetRing(frac){ hById('hRingFg').style.strokeDashoffset = H_C*(1-frac); }
+function hStartTimer(){
+  clearInterval(hTimerId);
+  hRemaining = hMinutes*60; const total = hRemaining;
+  hById('hClockNum').textContent = hFmt(hRemaining);
+  hById('hClockLbl').textContent = "集中";
+  hSetRing(1);
+  hTimerId = setInterval(()=>{
+    hRemaining--;
+    hById('hClockNum').textContent = hFmt(Math.max(hRemaining,0));
+    hSetRing(Math.max(hRemaining,0)/total);
+    if(hRemaining<=0){ clearInterval(hTimerId); habitChime(); hFinishTask(); }
+  },1000);
+}
+function habitChime(){
+  try{
+    const ac=new (window.AudioContext||window.webkitAudioContext)();
+    [523.25,659.25,783.99].forEach((f,i)=>{
+      const o=ac.createOscillator(), g=ac.createGain();
+      o.type="sine"; o.frequency.value=f; o.connect(g); g.connect(ac.destination);
+      const t=ac.currentTime+i*0.14;
+      g.gain.setValueAtTime(0,t); g.gain.linearRampToValueAtTime(0.12,t+0.03);
+      g.gain.exponentialRampToValueAtTime(0.0001,t+0.9);
+      o.start(t); o.stop(t+0.95);
+    });
+  }catch(e){}
+}
+function hPickTask(){
+  let i; do{ i=Math.floor(Math.random()*HABIT_TASKS.length); } while(i===hLastTaskIdx && HABIT_TASKS.length>1);
+  hLastTaskIdx=i; hById('hTaskText').textContent = HABIT_TASKS[i];
+}
+function hOpenTask(){ hPickTask(); hShow('task'); hStartTimer(); }
+function hRecordDone(){
+  const t = logicalDay();
+  if(store.habit.lastDate===t){ /* 今日はカウント済み・据え置き */ }
+  else if(store.habit.lastDate===logicalYesterday()){ store.habit.streak=(store.habit.streak||0)+1; }
+  else { store.habit.streak=1; }
+  store.habit.total=(store.habit.total||0)+1;
+  store.habit.lastDate=t;
+  saveStore(); renderHabitStreak(); renderHome();
+}
+function hFinishTask(){
+  clearInterval(hTimerId); hRecordDone();
+  hById('hDonePraise').textContent = HABIT_PRAISE[Math.floor(Math.random()*HABIT_PRAISE.length)];
+  hById('hDoneN').textContent = store.habit.streak;
+  hShow('done');
+}
+function openHabit(){ habitModal.classList.add('open'); document.body.style.overflow='hidden'; hShow('start'); renderHabitStreak(); }
+function closeHabit(){ habitModal.classList.remove('open'); clearInterval(hTimerId); document.body.style.overflow=''; }
+hById('hClose').addEventListener('click', closeHabit);
+habitModal.addEventListener('click', e=>{ if(e.target===habitModal) closeHabit(); });
+document.addEventListener('keydown', e=>{ if(e.key==='Escape' && habitModal.classList.contains('open')) closeHabit(); });
+hById('hStartBtn').addEventListener('click', hOpenTask);
+hById('hDoneBtn').addEventListener('click', hFinishTask);
+hById('hStopBtn').addEventListener('click', ()=>{ clearInterval(hTimerId); hShow('start'); });
+hById('hSwapBtn').addEventListener('click', ()=>{ hPickTask(); hStartTimer(); });
+hById('hMoreBtn').addEventListener('click', hOpenTask);
+hById('hFinishBtn').addEventListener('click', ()=>{ hShow('start'); });
+hById('hLens').addEventListener('click', e=>{
+  const b=e.target.closest('button'); if(!b) return;
+  [...hById('hLens').children].forEach(x=>x.classList.remove('sel'));
+  b.classList.add('sel'); hMinutes=parseInt(b.dataset.min,10); hStartTimer();
+});
+hById('hcHabit').addEventListener('click', openHabit);
+
 /* ---- boot ---- */
 loadStore();
 const cw0 = currentMealWeek();
@@ -1624,6 +1856,7 @@ renderBento(cw0);
 renderRice();
 renderSchedule();
 renderHome();
+renderHabitStreak();
 </script>
 </body>
 </html>
